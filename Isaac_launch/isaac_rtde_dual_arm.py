@@ -11,19 +11,21 @@ from omni.isaac.core.utils.nucleus import get_assets_root_path
 from omni.isaac.motion_generation.interface_config_loader import load_supported_motion_policy_config
 import rtde_control
 import rtde_receive
+from Gripper_control import UR3eGripper
 import numpy as np
 import argparse
 import sys
-
+import time
 # Set up argument parsers
 parser = argparse.ArgumentParser()
 parser.add_argument("--robot-ip", type=str, default="192.168.10.23", help="IP address of the first robot")
 arg = parser.parse_args()
+ur3e_gripper_instance = UR3eGripper(ip_address=arg.robot_ip)
 
 parser2 = argparse.ArgumentParser()
 parser2.add_argument("--robot-ip2", type=str, default="192.168.10.25", help="IP address of the second robot")
 arg_2 = parser2.parse_args()
-
+ur3e_gripper_instance_2 = UR3eGripper(ip_address=arg_2.robot_ip2)
 # Set up paths and prims
 robot_name = "UR3e"
 prim_path = "/UR3e"
