@@ -45,7 +45,7 @@ ur3e_gripper_instance = UR3eGripper(arg.host,rtde_receive_interface,30004)
 # set up paths and prims
 robot_name = "UR3e"
 prim_path = "/UR3e"
-usd_path ="/home/khalil/Desktop/ur3e_gripper_humble_moveit2-humble/flatten1.usd"
+usd_path ="/home/khalil/Desktop/ur3e_gripper_humble_moveit2-humble/flatten.usd"
 
 # set references to staget in isaac
 add_reference_to_stage(usd_path=usd_path, prim_path=prim_path)
