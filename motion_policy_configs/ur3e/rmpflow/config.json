@@ -1,10 +1,10 @@
 {
-    "end_effector_frame_name": "tool0",
+    "end_effector_frame_name": "gripper_center",
     "maximum_substep_size" : 0.00334,
     "ignore_robot_state_updates" : false,
     "relative_asset_paths": {
-        "robot_description_path" : "ur3e_robot_description.yaml",
-        "urdf_path": "../ur3e.urdf",
-        "rmpflow_config_path" : "ur3e_rmpflow_config.yaml"
+        "robot_description_path" : "ur3e_gripper_robot_description.yaml",
+        "urdf_path": "../ur3e_gripper.urdf",
+        "rmpflow_config_path" : "ur3e_gripper_rmpflow_config.yaml"
     }
 }
