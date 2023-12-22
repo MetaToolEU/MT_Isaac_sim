@@ -3,7 +3,10 @@
 🤖 Simulate and control two Universal Robots (UR) arms concurrently using NVIDIA Isaac Sim. This project provides a digital twin environment for realistic robotic simulation and testing control algorithms.
 
 ![Isaac_sim_real_control](https://github.com/MetaToolEU/MT_Isaac_sim/assets/28174056/ea133980-3dd8-4deb-8aa1-991018188275)
-
+<p align="center"><b>Model Predictive Control (MPC) to reach target</b></p>
+<p align="center">
+  <img src="https://github.com/MetaToolEU/MT_Isaac_sim//assets/28174056/d44a65a1-64d7-4133-a371-0c3a1c28e209" alt="gripper_mpc">
+</p>
 
 ## Features
 
