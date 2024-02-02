@@ -16,20 +16,31 @@ import numpy as np
 import argparse
 import sys
 import time
+import os
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 # Set up argument parsers
 parser = argparse.ArgumentParser()
 parser.add_argument("--robot-ip", type=str, default="192.168.10.23", help="IP address of the first robot")
 arg = parser.parse_args()
-ur3e_gripper_instance = UR3eGripper(ip_address=arg.robot_ip)
+rtde_receive_interface = rtde_receive.RTDEReceiveInterface(arg.robot_ip)
+
+ur3e_gripper_instance = UR3eGripper(arg.robot_ip,rtde_receive_interface,30004)
+
+# ur3e_gripper_instance = UR3eGripper(ip_address=arg.robot_ip)
 
 parser2 = argparse.ArgumentParser()
 parser2.add_argument("--robot-ip2", type=str, default="192.168.10.25", help="IP address of the second robot")
 arg_2 = parser2.parse_args()
-ur3e_gripper_instance_2 = UR3eGripper(ip_address=arg_2.robot_ip2)
+rtde_receive_interface_2 = rtde_receive.RTDEReceiveInterface(arg_2.robot_ip2)
+
+ur3e_gripper_instance_2 = UR3eGripper(arg_2.robot_ip2,rtde_receive_interface_2,30004)
+
+# ur3e_gripper_instance_2 = UR3eGripper(ip_address=arg_2.robot_ip2)
 # Set up paths and prims
 robot_name = "UR3e"
 prim_path = "/UR3e"
-usd_path = get_assets_root_path() + "/Isaac/Robots/UniversalRobots/ur3e/ur3e.usd"
+usd_path = os.path.join(script_dir, "../usd/flatten_updated_1.usd")
 
 robot_name_2 = "UR3e_2"
 prim_path_2 = "/UR3e_2"
@@ -43,22 +54,34 @@ my_world = World(stage_units_in_meters=1.0)
 my_world.scene.add_default_ground_plane()
 
 # Add robots to the world
-robot = my_world.scene.add(Robot(prim_path=prim_path, name=robot_name))
-robot_2 = my_world.scene.add(Robot(prim_path=prim_path_2, name=robot_name_2, position=np.array([0, 1.0, 0])))
+robot = my_world.scene.add(Robot(prim_path=prim_path, name=robot_name, position=np.array([0, 1.0, 0])))
+robot_2 = my_world.scene.add(Robot(prim_path=prim_path_2, name=robot_name_2))
 
 # Load supported motion policy configurations
 rmp_config = load_supported_motion_policy_config(robot_name, "RMPflow")
 
 # Initialize RmpFlow objects and set up
-rmpflow = RmpFlow(**rmp_config)
+# Robot 1
+rmpflow = RmpFlow(            
+            robot_description_path = os.path.join(script_dir, "../motion_policy_configs/ur3e/rmpflow/ur3e_gripper_robot_description.yaml"),
+            urdf_path =  os.path.join(script_dir, "../motion_policy_configs/ur3e/ur3e_gripper.urdf"),
+            rmpflow_config_path = os.path.join(script_dir, "../motion_policy_configs/ur3e/rmpflow/ur3e_gripper_rmpflow_config.yaml"),
+            end_effector_frame_name = "gripper_center",
+            maximum_substep_size = 0.00334
+        )
 physics_dt = 1.0 / 60
 
-# Robot 1
 articulation_rmpflow = ArticulationMotionPolicy(robot, rmpflow, physics_dt)
 articulation_controller = robot.get_articulation_controller()
 
 # Robot 2
-rmpflow_2 = RmpFlow(**rmp_config)
+rmpflow_2 = RmpFlow(            
+            robot_description_path = os.path.join(script_dir, "../motion_policy_configs/ur3e/rmpflow/ur3e_gripper_robot_description.yaml"),
+            urdf_path =  os.path.join(script_dir, "../motion_policy_configs/ur3e/ur3e_gripper.urdf"),
+            rmpflow_config_path = os.path.join(script_dir, "../motion_policy_configs/ur3e/rmpflow/ur3e_gripper_rmpflow_config.yaml"),
+            end_effector_frame_name = "gripper_center",
+            maximum_substep_size = 0.00334
+        )
 articulation_rmpflow_2 = ArticulationMotionPolicy(robot_2, rmpflow_2, physics_dt)
 articulation_controller_2 = robot_2.get_articulation_controller()
 
@@ -79,7 +102,7 @@ my_world.reset()
 try:
     rtde_r = rtde_receive.RTDEReceiveInterface(arg.robot_ip)
     rtde_c = rtde_control.RTDEControlInterface(arg.robot_ip, 500.0, rtde_control.RTDEControlInterface.FLAG_USE_EXT_UR_CAP, 50002)
-    robot.set_joint_positions(np.array(rtde_r.getActualQ()))
+    # robot.set_joint_positions(np.array(rtde_r.getActualQ()))
 
 except:
     print("[ERROR] First robot is not connected")
@@ -90,7 +113,7 @@ except:
 try:
     rtde_r_2 = rtde_receive.RTDEReceiveInterface(arg_2.robot_ip2)
     rtde_c_2 = rtde_control.RTDEControlInterface(arg_2.robot_ip2, 500.0, rtde_control.RTDEControlInterface.FLAG_USE_EXT_UR_CAP, 50007)
-    robot_2.set_joint_positions(np.array(rtde_r_2.getActualQ()))
+    # robot_2.set_joint_positions(np.array(rtde_r_2.getActualQ()))
 
 except:
     print("[ERROR] Second robot is not connected")
@@ -110,8 +133,11 @@ while simulation_app.is_running():
         rmpflow_2.update_world()
 
         # Get actual joint positions from robots and update Isaac model
-        robot.set_joint_positions(np.array(rtde_r.getActualQ()))
-        robot_2.set_joint_positions(np.array(rtde_r_2.getActualQ()))
+        actual_q, gripper_position =  ur3e_gripper_instance.extract_position()
+        actual_q_2, gripper_position_2 =  ur3e_gripper_instance_2.extract_position()
+
+        robot.set_joint_positions(np.array(list(actual_q)+[gripper_position,gripper_position]))
+        robot_2.set_joint_positions(np.array(list(actual_q_2)+[gripper_position_2,gripper_position_2]))
 
 # RTDE control stop script and disconnect
 rtde_c.servoStop()
