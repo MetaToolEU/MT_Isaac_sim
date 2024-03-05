@@ -7,8 +7,8 @@
                 double radius = 500
             }
             dictionary Perspective = {
-                double3 position = (-1203.941001234431, 621.738414542878, -105.45503245611762)
-                double3 target = (1018.7835213123894, -16.20611848459862, -140.90739714886507)
+                double3 position = (159.0514213960341, 249.4331537418292, -32.98662550100346)
+                double3 target = (383.8483667305244, 114.64799511652018, -648.3955935918012)
             }
             dictionary Right = {
                 double3 position = (-50000, 0, 0)
@@ -703,6 +703,44 @@ def Xform "World"
                     )
                 }
             }
+
+            def Material "OmniPBR"
+            {
+                token outputs:mdl:displacement.connect = </World/Laboratorio_v2/Looks/OmniPBR/Shader.outputs:out>
+                token outputs:mdl:surface.connect = </World/Laboratorio_v2/Looks/OmniPBR/Shader.outputs:out>
+                token outputs:mdl:volume.connect = </World/Laboratorio_v2/Looks/OmniPBR/Shader.outputs:out>
+
+                def Shader "Shader"
+                {
+                    uniform token info:implementationSource = "sourceAsset"
+                    uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                    uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                    asset inputs:diffuse_texture = @./textures/Ceiling tiles.png@ (
+                        colorSpace = "auto"
+                        customData = {
+                            asset default = @@
+                        }
+                        displayGroup = "Albedo"
+                        displayName = "Albedo Map"
+                        hidden = false
+                        renderType = "texture_2d"
+                    )
+                    float2 inputs:texture_scale = (-14, -8) (
+                        customData = {
+                            float2 default = (1, 1)
+                        }
+                        displayGroup = "UV"
+                        displayName = "Texture Tiling"
+                        doc = """Controls the repetition of the texture.
+
+"""
+                        hidden = false
+                    )
+                    token outputs:out (
+                        renderType = "material"
+                    )
+                }
+            }
         }
 
         over "Laboratorio_v2"
@@ -866,6 +904,50 @@ def Xform "World"
                 double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
+
+            def Mesh "Cube_01" (
+                delete apiSchemas = ["OmniSceneVisualizationAPI"]
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+                rel material:binding = </World/Laboratorio_v2/Looks/OmniPBR> (
+                    bindMaterialAs = "weakerThanDescendants"
+                )
+                normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+                texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token subdivisionScheme = "none"
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (0.0747351348400116, 0.004122923128306866, 0.03799999877810478)
+                double3 xformOp:translate = (-0.0030648623759716997, 3.395611099854736, -0.0019029596391286763)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def Mesh "Plane_01"
+            {
+                float3[] extent = [(-50, 0, -50), (50, 0, 50)]
+                int[] faceVertexCounts = [4]
+                int[] faceVertexIndices = [0, 2, 3, 1]
+                normal3f[] normals = [(0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0)] (
+                    interpolation = "faceVarying"
+                )
+                point3f[] points = [(-50, 0, -50), (50, 0, -50), (-50, 0, 50), (50, 0, 50)]
+                texCoord2f[] primvars:st = [(0, 1), (0, 0), (1, 0), (1, 1)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token subdivisionScheme = "none"
+                double3 xformOp:rotateXYZ = (180, 4.961562827661371e-15, 90)
+                double3 xformOp:scale = (-0.006800000090152025, -0.009999999776482582, -0.012000000104308128)
+                double3 xformOp:translate = (3.5399993896484294, 1.951566162109373, -0.668612976074219)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
         }
 
         def Xform "Internal_Lights" (
@@ -894,7 +976,7 @@ def Xform "World"
                 token visibility = "inherited"
                 double3 xformOp:rotateXYZ = (0, 90, 90)
                 double3 xformOp:scale = (0.003000000026077032, 0.003000000026077032, 0.003000000026077032)
-                double3 xformOp:translate = (-2.5149999999999997, 3.1045591999999997, 0.6218063399959959)
+                double3 xformOp:translate = (-2.5149999999999997, 3.18456, 0.6218063399959959)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -1038,89 +1120,60 @@ def Xform "World"
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
         }
-    }
 
-    def Mesh "Plane"
-    {
-        float3[] extent = [(-50, 0, -50), (50, 0, 50)]
-        int[] faceVertexCounts = [4]
-        int[] faceVertexIndices = [0, 2, 3, 1]
-        normal3f[] normals = [(0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0)] (
-            interpolation = "faceVarying"
+        def Xform "External_Lights" (
+            kind = "group"
         )
-        point3f[] points = [(-50, 0, -50), (50, 0, -50), (-50, 0, 50), (50, 0, 50)]
-        texCoord2f[] primvars:st = [(0, 1), (0, 0), (1, 0), (1, 1)] (
-            interpolation = "faceVarying"
-        )
-        uniform token subdivisionScheme = "none"
-        double3 xformOp:rotateXYZ = (0, 0, 90)
-        double3 xformOp:scale = (-0.68, 1, 1.2)
-        double3 xformOp:translate = (710.499938964843, 215.1566162109373, -236.86129760742188)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
-    }
-
-    def Mesh "Cube" (
-        delete apiSchemas = ["OmniSceneVisualizationAPI"]
-        prepend apiSchemas = ["MaterialBindingAPI"]
-    )
-    {
-        float3[] extent = [(-50, -50, -50), (50, 50, 50)]
-        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
-        int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
-        rel material:binding = </World/Looks/OmniPBR> (
-            bindMaterialAs = "weakerThanDescendants"
-        )
-        normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
-            interpolation = "faceVarying"
-        )
-        point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
-        texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
-            interpolation = "faceVarying"
-        )
-        uniform token subdivisionScheme = "none"
-        double3 xformOp:rotateXYZ = (0, 0, 0)
-        double3 xformOp:scale = (7.473513368922488, 0.41229229354429625, 3.8)
-        double3 xformOp:translate = (356.1935137624028, 359.56110998547365, -170.19029596391286)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
-    }
-
-    def Scope "Looks"
-    {
-        def Material "OmniPBR"
         {
-            token outputs:mdl:displacement.connect = </World/Looks/OmniPBR/Shader.outputs:out>
-            token outputs:mdl:surface.connect = </World/Looks/OmniPBR/Shader.outputs:out>
-            token outputs:mdl:volume.connect = </World/Looks/OmniPBR/Shader.outputs:out>
+            float3 xformOp:rotateXYZ = (0, 0, 0)
+            float3 xformOp:scale = (0.01, 0.01, 0.01)
+            double3 xformOp:translate = (-3.565, -0.19999999999999998, 1.7)
+            float3 xformOp:translate:pivot = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:translate:pivot", "xformOp:rotateXYZ", "xformOp:scale", "!invert!xformOp:translate:pivot"]
 
-            def Shader "Shader"
+            def DistantLight "DistantLight" (
+                prepend apiSchemas = ["ShapingAPI"]
+            )
             {
-                uniform token info:implementationSource = "sourceAsset"
-                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
-                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
-                asset inputs:diffuse_texture = @./textures/Ceiling tiles.png@ (
-                    colorSpace = "auto"
-                    customData = {
-                        asset default = @@
-                    }
-                    displayGroup = "Albedo"
-                    displayName = "Albedo Map"
-                    hidden = false
-                    renderType = "texture_2d"
-                )
-                float2 inputs:texture_scale = (-14, -8) (
-                    customData = {
-                        float2 default = (1, 1)
-                    }
-                    displayGroup = "UV"
-                    displayName = "Texture Tiling"
-                    doc = """Controls the repetition of the texture.
+                float inputs:angle = 2.5
+                float inputs:colorTemperature = 7389.1
+                bool inputs:enableColorTemperature = 1
+                float inputs:exposure = 10
+                float inputs:intensity = 1
+                float inputs:shaping:cone:angle = 180
+                float inputs:shaping:cone:softness
+                float inputs:shaping:focus
+                color3f inputs:shaping:focusTint
+                asset inputs:shaping:ies:file
+                uniform token light:materialSyncMode = "noMaterialResponse"
+                token visibility = "inherited"
+                double3 xformOp:rotateXYZ = (-143.3277439874333, 0, 0)
+                double3 xformOp:scale = (24.035047261672627, 2.2258039158316834, 5.985225873215801)
+                double3 xformOp:translate = (472.70427384471, 299.4613067632504, -516.0193017688227)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
 
-"""
-                    hidden = false
-                )
-                token outputs:out (
-                    renderType = "material"
-                )
+            def DomeLight "Sky" (
+                prepend apiSchemas = ["ShapingAPI"]
+            )
+            {
+                float inputs:colorTemperature = 6250
+                bool inputs:enableColorTemperature = 1
+                float inputs:exposure = 9
+                float inputs:intensity = 1
+                bool inputs:normalize = 0
+                float inputs:shaping:cone:angle = 180
+                float inputs:shaping:cone:softness
+                float inputs:shaping:focus
+                color3f inputs:shaping:focusTint
+                asset inputs:shaping:ies:file
+                asset inputs:texture:file = @https://omniverse-content-production.s3.us-west-2.amazonaws.com/Environments/2023_1/DomeLights/Cloudy/white_cliff_top.hdr@
+                token inputs:texture:format = "latlong"
+                token visibility = "inherited"
+                double3 xformOp:rotateXYZ = (0, -90, -90)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (1.401298464324817e-44, 477.89373283419565, 222.65481047127813)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
         }
     }
@@ -1135,252 +1188,8 @@ def Xform "Environment"
     double3 xformOp:translate = (0, 0, 0)
     uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
 
-    def DomeLight "Sky" (
-        prepend apiSchemas = ["ShapingAPI"]
-    )
-    {
-        float inputs:colorTemperature = 6250
-        bool inputs:enableColorTemperature = 1
-        float inputs:exposure = 9
-        float inputs:intensity = 1
-        float inputs:shaping:cone:angle = 180
-        float inputs:shaping:cone:softness
-        float inputs:shaping:focus
-        color3f inputs:shaping:focusTint
-        asset inputs:shaping:ies:file
-        asset inputs:texture:file = @https://omniverse-content-production.s3.us-west-2.amazonaws.com/Assets/Scenes/Templates/Default/SubUSDs/textures/CarLight_512x256.hdr@
-        token inputs:texture:format = "latlong"
-        token visibility = "inherited"
-        double3 xformOp:rotateXYZ = (0, -90, -90)
-        double3 xformOp:scale = (1, 1, 1)
-        double3 xformOp:translate = (1.401298464324817e-44, 41.886821400865415, 222.65481047127813)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
-    }
-
-    def DistantLight "DistantLight" (
-        prepend apiSchemas = ["ShapingAPI"]
-    )
-    {
-        float inputs:angle = 2.5
-        float inputs:colorTemperature = 7389.1
-        bool inputs:enableColorTemperature = 1
-        float inputs:exposure = 10
-        float inputs:intensity = 1
-        float inputs:shaping:cone:angle = 180
-        float inputs:shaping:cone:softness
-        float inputs:shaping:focus
-        color3f inputs:shaping:focusTint
-        asset inputs:shaping:ies:file
-        token visibility = "inherited"
-        double3 xformOp:rotateXYZ = (-143.3277439874333, 0, 0)
-        double3 xformOp:scale = (24.035047261672627, 2.2258039158316834, 5.985225873215801)
-        double3 xformOp:translate = (472.70427384471, 299.4613067632504, -516.0193017688227)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
-    }
-
     def Scope "Looks"
     {
-        def Material "Grid"
-        {
-            token outputs:mdl:displacement.connect = </Environment/Looks/Grid/Shader.outputs:out>
-            token outputs:mdl:surface.connect = </Environment/Looks/Grid/Shader.outputs:out>
-            token outputs:mdl:volume.connect = </Environment/Looks/Grid/Shader.outputs:out>
-
-            def Shader "Shader"
-            {
-                uniform token info:implementationSource = "sourceAsset"
-                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
-                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
-                float inputs:albedo_add = 0 (
-                    customData = {
-                        float default = 0
-                        dictionary soft_range = {
-                            float max = 1
-                            float min = -1
-                        }
-                    }
-                    displayGroup = "Albedo"
-                    displayName = "Albedo Add"
-                    doc = """Adds a constant value to the diffuse color 
-
-"""
-                    hidden = false
-                )
-                float inputs:albedo_brightness = 1 (
-                    customData = {
-                        float default = 1
-                        dictionary soft_range = {
-                            float max = 1
-                            float min = 0
-                        }
-                    }
-                    displayGroup = "Albedo"
-                    displayName = "Albedo Brightness"
-                    doc = """Multiplier for the diffuse color 
-
-"""
-                    hidden = false
-                )
-                float inputs:albedo_desaturation = 0 (
-                    customData = {
-                        float default = 0
-                        dictionary soft_range = {
-                            float max = 1
-                            float min = 0
-                        }
-                    }
-                    displayGroup = "Albedo"
-                    displayName = "Albedo Desaturation"
-                    doc = """Desaturates the diffuse color
-
-"""
-                    hidden = false
-                )
-                color3f inputs:diffuse_color_constant = (1, 1, 0.99999) (
-                    customData = {
-                        float3 default = (0.2, 0.2, 0.2)
-                    }
-                    displayGroup = "Albedo"
-                    displayName = "Albedo Color"
-                    doc = """This is the albedo base color
-
-"""
-                    hidden = false
-                    renderType = "color"
-                )
-                asset inputs:diffuse_texture = @./textures/Grass.jpg@ (
-                    colorSpace = "sRGB"
-                    customData = {
-                        asset default = @@
-                    }
-                    displayGroup = "Albedo"
-                    displayName = "Albedo Map"
-                    hidden = false
-                    renderType = "texture_2d"
-                )
-                bool inputs:enable_emission = 0 (
-                    customData = {
-                        bool default = 0
-                    }
-                    displayGroup = "Emissive"
-                    displayName = "Enable Emission"
-                    doc = """Enables the emission of light from the material
-
-"""
-                    hidden = false
-                )
-                bool inputs:enable_opacity = 0 (
-                    customData = {
-                        bool default = 0
-                    }
-                    displayGroup = "Opacity"
-                    displayName = "Enable Opacity"
-                    doc = """Enables the use of cutout opacity
-
-"""
-                    hidden = false
-                )
-                bool inputs:project_uvw = 0 (
-                    customData = {
-                        bool default = 0
-                    }
-                    displayGroup = "UV"
-                    displayName = "Enable Project UVW Coordinates"
-                    doc = """When enabled, UV coordinates will be generated by projecting them from a coordinate system
-
-"""
-                    hidden = false
-                )
-                float inputs:reflection_roughness_constant = 0.5 (
-                    customData = {
-                        float default = 0.5
-                        dictionary range = {
-                            float max = 1
-                            float min = 0
-                        }
-                    }
-                    displayGroup = "Reflectivity"
-                    displayName = "Roughness Amount"
-                    doc = """Higher roughness values lead to more blurry reflections
-
-"""
-                    hidden = false
-                )
-                float inputs:texture_rotate = 0 (
-                    customData = {
-                        float default = 0
-                    }
-                    displayGroup = "UV"
-                    displayName = "Texture Rotate"
-                    doc = """Rotates angle of texture in degrees.
-
-"""
-                    hidden = false
-                )
-                float2 inputs:texture_scale = (1, 1) (
-                    customData = {
-                        float2 default = (1, 1)
-                    }
-                    displayGroup = "UV"
-                    displayName = "Texture Tiling"
-                    doc = """Controls the repetition of the texture.
-
-"""
-                    hidden = false
-                )
-                float2 inputs:texture_translate = (0, 0) (
-                    customData = {
-                        float2 default = (0, 0)
-                    }
-                    displayGroup = "UV"
-                    displayName = "Texture Translate"
-                    doc = """Controls position of texture.
-
-"""
-                    hidden = false
-                )
-                bool inputs:world_or_object = 0 (
-                    customData = {
-                        bool default = 0
-                    }
-                    displayGroup = "UV"
-                    displayName = "Enable World Space"
-                    doc = """When enabled, uses world space for projection, otherwise object space is used
-
-"""
-                    hidden = false
-                )
-                token outputs:out (
-                    renderType = "material"
-                )
-            }
-        }
-    }
-
-    def Mesh "ground" (
-        prepend apiSchemas = ["MaterialBindingAPI"]
-    )
-    {
-        float3[] extent = [(-1400, -1400, 0), (1400, 1400, 0)]
-        int[] faceVertexCounts = [4]
-        int[] faceVertexIndices = [0, 1, 3, 2]
-        rel material:binding = </Environment/Looks/Grid> (
-            bindMaterialAs = "weakerThanDescendants"
-        )
-        normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
-            interpolation = "faceVarying"
-        )
-        point3f[] points = [(-700, -700, 0), (700, -700, 0), (-700, 700, 0), (700, 700, 0)]
-        bool primvars:isMatteObject = 0
-        texCoord2f[] primvars:st = [(0, 0), (14, 0), (14, 14), (0, 14)] (
-            interpolation = "faceVarying"
-        )
-        uniform token subdivisionScheme = "none"
-        token visibility = "inherited"
-        double3 xformOp:rotateXYZ = (0, -90, -90)
-        double3 xformOp:scale = (1, 1, 1)
-        double3 xformOp:translate = (390.21705515745776, -15.888787015304786, 1.3890918409832376e-43)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
     }
 
     def Plane "groundCollider" (
