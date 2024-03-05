@@ -5,5 +5,7 @@ This should fix the pathing errors for textures as long as everything is in the 
 
 ## References to make wall X0 Y0 Z0
 X 365.5 Y 20 Z -170
+
 X 0 Y 0 Z 0
+
 X 100 Y 100 Z 100
