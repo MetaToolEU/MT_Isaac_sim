@@ -4,8 +4,8 @@ To fix this issue, remove the part on the right of the =, and substitute it with
 This should fix the pathing errors for textures as long as everything is in the same folder as the .usda that you are trying to open/import.
 
 ## References to make wall X0 Y0 Z0
-X 365.5 Y 20 Z -170
-
-X 0 Y 0 Z 0
-
-X 100 Y 100 Z 100
+|             | X     | Y   | Z    |
+|-------------|-------|-----|------|
+| Translation | 365.5 | 20  | -170 |
+| Rotation    | 0     | 0   | 0    |
+| Scale       | 100   | 100 | 100  |
