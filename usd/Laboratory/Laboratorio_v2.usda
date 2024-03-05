@@ -7,8 +7,8 @@
                 double radius = 500
             }
             dictionary Perspective = {
-                double3 position = (42.534056802376305, 263.9874018719178, -125.33625835238865)
-                double3 target = (1018.7835213123867, -16.20611848460976, -140.907397148865)
+                double3 position = (-1203.941001234431, 621.738414542878, -105.45503245611762)
+                double3 target = (1018.7835213123894, -16.20611848459862, -140.90739714886507)
             }
             dictionary Right = {
                 double3 position = (-50000, 0, 0)
@@ -867,6 +867,177 @@ def Xform "World"
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
         }
+
+        def Xform "Internal_Lights" (
+            kind = "group"
+        )
+        {
+            float3 xformOp:rotateXYZ = (0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            float3 xformOp:translate:pivot = (0.06, 3.1445591, 0.06247966)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:translate:pivot", "xformOp:rotateXYZ", "xformOp:scale", "!invert!xformOp:translate:pivot"]
+
+            def RectLight "RectLight" (
+                prepend apiSchemas = ["ShapingAPI"]
+            )
+            {
+                float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+                float inputs:height = 100
+                float inputs:intensity = 40000
+                float inputs:shaping:cone:angle = 180
+                float inputs:shaping:cone:softness
+                float inputs:shaping:focus
+                color3f inputs:shaping:focusTint
+                asset inputs:shaping:ies:file
+                float inputs:width = 100
+                token visibility = "inherited"
+                double3 xformOp:rotateXYZ = (0, 90, 90)
+                double3 xformOp:scale = (0.003000000026077032, 0.003000000026077032, 0.003000000026077032)
+                double3 xformOp:translate = (-2.5149999999999997, 3.1045591999999997, 0.6218063399959959)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def RectLight "RectLight_01" (
+                prepend apiSchemas = ["ShapingAPI"]
+            )
+            {
+                float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+                float inputs:height = 100
+                float inputs:intensity = 40000
+                float inputs:shaping:cone:angle = 180
+                float inputs:shaping:cone:softness
+                float inputs:shaping:focus
+                color3f inputs:shaping:focusTint
+                asset inputs:shaping:ies:file
+                float inputs:width = 100
+                token visibility = "inherited"
+                double3 xformOp:rotateXYZ = (0, 90, 90)
+                double3 xformOp:scale = (0.003000000026077032, 0.003000000026077032, 0.003000000026077032)
+                double3 xformOp:translate = (-2.5149999999999997, 3.1845591587367466, -0.49684702197876995)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def RectLight "RectLight_02" (
+                prepend apiSchemas = ["ShapingAPI"]
+            )
+            {
+                float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+                float inputs:height = 100
+                float inputs:intensity = 40000
+                float inputs:shaping:cone:angle = 180
+                float inputs:shaping:cone:softness
+                float inputs:shaping:focus
+                color3f inputs:shaping:focusTint
+                asset inputs:shaping:ies:file
+                float inputs:width = 100
+                token visibility = "inherited"
+                double3 xformOp:rotateXYZ = (0, 90, 90)
+                double3 xformOp:scale = (0.003000000026077032, 0.003000000026077032, 0.003000000026077032)
+                double3 xformOp:translate = (-1.165, 3.1845591587367448, 0.6218063399959952)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def RectLight "RectLight_03" (
+                prepend apiSchemas = ["ShapingAPI"]
+            )
+            {
+                float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+                float inputs:height = 100
+                float inputs:intensity = 40000
+                float inputs:shaping:cone:angle = 180
+                float inputs:shaping:cone:softness
+                float inputs:shaping:focus
+                color3f inputs:shaping:focusTint
+                asset inputs:shaping:ies:file
+                float inputs:width = 100
+                token visibility = "inherited"
+                double3 xformOp:rotateXYZ = (0, 90, 90)
+                double3 xformOp:scale = (0.003000000026077032, 0.003000000026077032, 0.003000000026077032)
+                double3 xformOp:translate = (-1.165, 3.1845591587367448, -0.49684700000000004)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def RectLight "RectLight_04" (
+                prepend apiSchemas = ["ShapingAPI"]
+            )
+            {
+                float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+                float inputs:height = 100
+                float inputs:intensity = 40000
+                float inputs:shaping:cone:angle = 180
+                float inputs:shaping:cone:softness
+                float inputs:shaping:focus
+                color3f inputs:shaping:focusTint
+                asset inputs:shaping:ies:file
+                float inputs:width = 100
+                token visibility = "inherited"
+                double3 xformOp:rotateXYZ = (0, 90, 90)
+                double3 xformOp:scale = (0.003000000026077032, 0.003000000026077032, 0.003000000026077032)
+                double3 xformOp:translate = (0.8350000000000004, 3.1845591587367448, -0.49684700000000004)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def RectLight "RectLight_05" (
+                prepend apiSchemas = ["ShapingAPI"]
+            )
+            {
+                float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+                float inputs:height = 100
+                float inputs:intensity = 40000
+                float inputs:shaping:cone:angle = 180
+                float inputs:shaping:cone:softness
+                float inputs:shaping:focus
+                color3f inputs:shaping:focusTint
+                asset inputs:shaping:ies:file
+                float inputs:width = 100
+                token visibility = "inherited"
+                double3 xformOp:rotateXYZ = (0, 90, 90)
+                double3 xformOp:scale = (0.003000000026077032, 0.003000000026077032, 0.003000000026077032)
+                double3 xformOp:translate = (0.8350000000000004, 3.1845591587367448, 0.6218062999999998)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def RectLight "RectLight_06" (
+                prepend apiSchemas = ["ShapingAPI"]
+            )
+            {
+                float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+                float inputs:height = 100
+                float inputs:intensity = 40000
+                float inputs:shaping:cone:angle = 180
+                float inputs:shaping:cone:softness
+                float inputs:shaping:focus
+                color3f inputs:shaping:focusTint
+                asset inputs:shaping:ies:file
+                float inputs:width = 100
+                token visibility = "inherited"
+                double3 xformOp:rotateXYZ = (0, 90, 90)
+                double3 xformOp:scale = (0.003000000026077032, 0.003000000026077032, 0.003000000026077032)
+                double3 xformOp:translate = (2.6350000000000002, 3.1845591587367448, -0.49684700000000004)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def RectLight "RectLight_07" (
+                prepend apiSchemas = ["ShapingAPI"]
+            )
+            {
+                float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+                float inputs:height = 100
+                float inputs:intensity = 40000
+                float inputs:shaping:cone:angle = 180
+                float inputs:shaping:cone:softness
+                float inputs:shaping:focus
+                color3f inputs:shaping:focusTint
+                asset inputs:shaping:ies:file
+                float inputs:width = 100
+                token visibility = "inherited"
+                double3 xformOp:rotateXYZ = (0, 90, 90)
+                double3 xformOp:scale = (0.003000000026077032, 0.003000000026077032, 0.003000000026077032)
+                double3 xformOp:translate = (2.6350000000000002, 3.1845591587367466, 0.6218062999999998)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+        }
     }
 
     def Mesh "Plane"
@@ -1219,165 +1390,5 @@ def Xform "Environment"
         uniform token axis = "Y"
         uniform token purpose = "guide"
     }
-}
-
-def RectLight "RectLight" (
-    prepend apiSchemas = ["ShapingAPI"]
-)
-{
-    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
-    float inputs:height = 100
-    float inputs:intensity = 40000
-    float inputs:shaping:cone:angle = 180
-    float inputs:shaping:cone:softness
-    float inputs:shaping:focus
-    color3f inputs:shaping:focusTint
-    asset inputs:shaping:ies:file
-    float inputs:width = 100
-    token visibility = "inherited"
-    double3 xformOp:rotateXYZ = (0, 90, 90)
-    double3 xformOp:scale = (0.3, 0.3, 0.3)
-    double3 xformOp:translate = (105, 330.45592, -107.81936600040041)
-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
-}
-
-def RectLight "RectLight_01" (
-    prepend apiSchemas = ["ShapingAPI"]
-)
-{
-    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
-    float inputs:height = 100
-    float inputs:intensity = 40000
-    float inputs:shaping:cone:angle = 180
-    float inputs:shaping:cone:softness
-    float inputs:shaping:focus
-    color3f inputs:shaping:focusTint
-    asset inputs:shaping:ies:file
-    float inputs:width = 100
-    token visibility = "inherited"
-    double3 xformOp:rotateXYZ = (0, 90, 90)
-    double3 xformOp:scale = (0.3, 0.3, 0.3)
-    double3 xformOp:translate = (105, 338.45591587367466, -219.684702197877)
-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
-}
-
-def RectLight "RectLight_02" (
-    prepend apiSchemas = ["ShapingAPI"]
-)
-{
-    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
-    float inputs:height = 100
-    float inputs:intensity = 40000
-    float inputs:shaping:cone:angle = 180
-    float inputs:shaping:cone:softness
-    float inputs:shaping:focus
-    color3f inputs:shaping:focusTint
-    asset inputs:shaping:ies:file
-    float inputs:width = 100
-    token visibility = "inherited"
-    double3 xformOp:rotateXYZ = (0, 90, 90)
-    double3 xformOp:scale = (0.3, 0.3, 0.3)
-    double3 xformOp:translate = (240, 338.4559158736745, -107.81936600040048)
-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
-}
-
-def RectLight "RectLight_03" (
-    prepend apiSchemas = ["ShapingAPI"]
-)
-{
-    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
-    float inputs:height = 100
-    float inputs:intensity = 40000
-    float inputs:shaping:cone:angle = 180
-    float inputs:shaping:cone:softness
-    float inputs:shaping:focus
-    color3f inputs:shaping:focusTint
-    asset inputs:shaping:ies:file
-    float inputs:width = 100
-    token visibility = "inherited"
-    double3 xformOp:rotateXYZ = (0, 90, 90)
-    double3 xformOp:scale = (0.3, 0.3, 0.3)
-    double3 xformOp:translate = (240, 338.4559158736745, -219.6847)
-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
-}
-
-def RectLight "RectLight_04" (
-    prepend apiSchemas = ["ShapingAPI"]
-)
-{
-    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
-    float inputs:height = 100
-    float inputs:intensity = 40000
-    float inputs:shaping:cone:angle = 180
-    float inputs:shaping:cone:softness
-    float inputs:shaping:focus
-    color3f inputs:shaping:focusTint
-    asset inputs:shaping:ies:file
-    float inputs:width = 100
-    token visibility = "inherited"
-    double3 xformOp:rotateXYZ = (0, 90, 90)
-    double3 xformOp:scale = (0.3, 0.3, 0.3)
-    double3 xformOp:translate = (440, 338.4559158736745, -219.6847)
-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
-}
-
-def RectLight "RectLight_05" (
-    prepend apiSchemas = ["ShapingAPI"]
-)
-{
-    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
-    float inputs:height = 100
-    float inputs:intensity = 40000
-    float inputs:shaping:cone:angle = 180
-    float inputs:shaping:cone:softness
-    float inputs:shaping:focus
-    color3f inputs:shaping:focusTint
-    asset inputs:shaping:ies:file
-    float inputs:width = 100
-    token visibility = "inherited"
-    double3 xformOp:rotateXYZ = (0, 90, 90)
-    double3 xformOp:scale = (0.3, 0.3, 0.3)
-    double3 xformOp:translate = (440, 338.4559158736745, -107.81937)
-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
-}
-
-def RectLight "RectLight_06" (
-    prepend apiSchemas = ["ShapingAPI"]
-)
-{
-    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
-    float inputs:height = 100
-    float inputs:intensity = 40000
-    float inputs:shaping:cone:angle = 180
-    float inputs:shaping:cone:softness
-    float inputs:shaping:focus
-    color3f inputs:shaping:focusTint
-    asset inputs:shaping:ies:file
-    float inputs:width = 100
-    token visibility = "inherited"
-    double3 xformOp:rotateXYZ = (0, 90, 90)
-    double3 xformOp:scale = (0.3, 0.3, 0.3)
-    double3 xformOp:translate = (620, 338.4559158736745, -219.6847)
-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
-}
-
-def RectLight "RectLight_07" (
-    prepend apiSchemas = ["ShapingAPI"]
-)
-{
-    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
-    float inputs:height = 100
-    float inputs:intensity = 40000
-    float inputs:shaping:cone:angle = 180
-    float inputs:shaping:cone:softness
-    float inputs:shaping:focus
-    color3f inputs:shaping:focusTint
-    asset inputs:shaping:ies:file
-    float inputs:width = 100
-    token visibility = "inherited"
-    double3 xformOp:rotateXYZ = (0, 90, 90)
-    double3 xformOp:scale = (0.3, 0.3, 0.3)
-    double3 xformOp:translate = (620, 338.45591587367466, -107.81937)
-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
 }
 
