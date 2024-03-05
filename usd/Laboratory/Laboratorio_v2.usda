@@ -7,8 +7,8 @@
                 double radius = 500
             }
             dictionary Perspective = {
-                double3 position = (271.71832084654073, 1112.1408446919359, -355.6448117251558)
-                double3 target = (745.1713757407125, -804.449012351804, 346.8090313672827)
+                double3 position = (42.534056802376305, 263.9874018719178, -125.33625835238865)
+                double3 target = (1018.7835213123867, -16.20611848460976, -140.907397148865)
             }
             dictionary Right = {
                 double3 position = (-50000, 0, 0)
@@ -36,6 +36,7 @@
         }
         dictionary renderSettings = {
             float3 "rtx:debugView:pixelDebug:textColor" = (0, 1e18, 0)
+            bool "rtx:directLighting:sampledLighting:enabled" = 1
             float3 "rtx:fog:fogColor" = (0.75, 0.75, 0.75)
             float3 "rtx:index:regionOfInterestMax" = (0, 0, 0)
             float3 "rtx:index:regionOfInterestMin" = (0, 0, 0)
@@ -115,6 +116,78 @@ def Xform "World"
                         }
                         hidden = false
                         renderType = "texture_2d"
+                    )
+                    bool inputs:enable_opacity = 0 (
+                        doc = """Enables the use of cutout opacity
+
+"""
+                        hidden = false
+                    )
+                    float inputs:metallic_constant = 0.04 (
+                        customData = {
+                            float default = 0
+                            dictionary range = {
+                                float max = 1
+                                float min = 0
+                            }
+                        }
+                        displayGroup = "Reflectivity"
+                        displayName = "Metallic Amount"
+                        doc = """Metallic Material
+
+"""
+                        hidden = false
+                    )
+                    float inputs:opacity_constant = 1 (
+                        doc = """Opacity value between 0 and 1, when Opacity Map is not valid
+
+"""
+                        hidden = false
+                    )
+                    float inputs:reflection_roughness_constant = 0.19999999 (
+                        customData = {
+                            float default = 0.5
+                            dictionary range = {
+                                float max = 1
+                                float min = 0
+                            }
+                        }
+                        displayGroup = "Reflectivity"
+                        displayName = "Roughness Amount"
+                        doc = """Higher roughness values lead to more blurry reflections
+
+"""
+                        hidden = false
+                    )
+                    float inputs:reflection_roughness_texture_influence = 0 (
+                        customData = {
+                            float default = 0
+                            dictionary range = {
+                                float max = 1
+                                float min = 0
+                            }
+                        }
+                        displayGroup = "Reflectivity"
+                        displayName = "Roughness Map Influence"
+                        doc = """Blends between the constant value and the lookup of the roughness texture
+
+"""
+                        hidden = false
+                    )
+                    float inputs:specular_level = 0.39 (
+                        customData = {
+                            float default = 0.5
+                            dictionary soft_range = {
+                                float max = 1
+                                float min = 0
+                            }
+                        }
+                        displayGroup = "Reflectivity"
+                        displayName = "Specular"
+                        doc = """The specular level (intensity) of the material
+
+"""
+                        hidden = false
                     )
                 }
             }
@@ -593,6 +666,43 @@ def Xform "World"
                     )
                 }
             }
+
+            over "WB_Board"
+            {
+                over "WB_Board"
+                {
+                    float inputs:metallic_constant = 0.44 (
+                        customData = {
+                            float default = 0
+                            dictionary range = {
+                                float max = 1
+                                float min = 0
+                            }
+                        }
+                        displayGroup = "Reflectivity"
+                        displayName = "Metallic Amount"
+                        doc = """Metallic Material
+
+"""
+                        hidden = false
+                    )
+                    float inputs:reflection_roughness_constant = 0.25 (
+                        customData = {
+                            float default = 0.5
+                            dictionary range = {
+                                float max = 1
+                                float min = 0
+                            }
+                        }
+                        displayGroup = "Reflectivity"
+                        displayName = "Roughness Amount"
+                        doc = """Higher roughness values lead to more blurry reflections
+
+"""
+                        hidden = false
+                    )
+                }
+            }
         }
 
         over "Laboratorio_v2"
@@ -601,7 +711,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -609,7 +719,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -617,7 +727,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -625,7 +735,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -633,7 +743,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -641,7 +751,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -649,7 +759,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -657,7 +767,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -665,7 +775,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -673,7 +783,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -681,7 +791,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -689,7 +799,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -697,7 +807,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -705,7 +815,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -713,7 +823,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -721,7 +831,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -729,7 +839,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -737,7 +847,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -745,7 +855,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
 
@@ -753,7 +863,7 @@ def Xform "World"
             {
                 float3 xformOp:rotateXYZ = (0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                double3 xformOp:translate = (0, -0.1423577011715531, 0)
+                double3 xformOp:translate = (0, -0.14951276363570998, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
             }
         }
@@ -776,6 +886,72 @@ def Xform "World"
         double3 xformOp:scale = (-0.68, 1, 1.2)
         double3 xformOp:translate = (710.499938964843, 215.1566162109373, -236.86129760742188)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Mesh "Cube" (
+        delete apiSchemas = ["OmniSceneVisualizationAPI"]
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+        rel material:binding = </World/Looks/OmniPBR> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+            interpolation = "faceVarying"
+        )
+        point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+        texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+            interpolation = "faceVarying"
+        )
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (7.473513368922488, 0.41229229354429625, 3.8)
+        double3 xformOp:translate = (356.1935137624028, 359.56110998547365, -170.19029596391286)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Scope "Looks"
+    {
+        def Material "OmniPBR"
+        {
+            token outputs:mdl:displacement.connect = </World/Looks/OmniPBR/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/Looks/OmniPBR/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/Looks/OmniPBR/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                asset inputs:diffuse_texture = @./textures/Ceiling tiles.png@ (
+                    colorSpace = "auto"
+                    customData = {
+                        asset default = @@
+                    }
+                    displayGroup = "Albedo"
+                    displayName = "Albedo Map"
+                    hidden = false
+                    renderType = "texture_2d"
+                )
+                float2 inputs:texture_scale = (-14, -8) (
+                    customData = {
+                        float2 default = (1, 1)
+                    }
+                    displayGroup = "UV"
+                    displayName = "Texture Tiling"
+                    doc = """Controls the repetition of the texture.
+
+"""
+                    hidden = false
+                )
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+        }
     }
 }
 
@@ -806,7 +982,7 @@ def Xform "Environment"
         token visibility = "inherited"
         double3 xformOp:rotateXYZ = (0, -90, -90)
         double3 xformOp:scale = (1, 1, 1)
-        double3 xformOp:translate = (0, 305, 0)
+        double3 xformOp:translate = (1.401298464324817e-44, 41.886821400865415, 222.65481047127813)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
     }
 
@@ -815,7 +991,7 @@ def Xform "Environment"
     )
     {
         float inputs:angle = 2.5
-        float inputs:colorTemperature = 7250
+        float inputs:colorTemperature = 7389.1
         bool inputs:enableColorTemperature = 1
         float inputs:exposure = 10
         float inputs:intensity = 1
@@ -825,9 +1001,9 @@ def Xform "Environment"
         color3f inputs:shaping:focusTint
         asset inputs:shaping:ies:file
         token visibility = "inherited"
-        double3 xformOp:rotateXYZ = (-105, 0, 0)
-        double3 xformOp:scale = (1, 1, 1)
-        double3 xformOp:translate = (0, 305, 0)
+        double3 xformOp:rotateXYZ = (-143.3277439874333, 0, 0)
+        double3 xformOp:scale = (24.035047261672627, 2.2258039158316834, 5.985225873215801)
+        double3 xformOp:translate = (472.70427384471, 299.4613067632504, -516.0193017688227)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
     }
 
@@ -1043,5 +1219,165 @@ def Xform "Environment"
         uniform token axis = "Y"
         uniform token purpose = "guide"
     }
+}
+
+def RectLight "RectLight" (
+    prepend apiSchemas = ["ShapingAPI"]
+)
+{
+    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+    float inputs:height = 100
+    float inputs:intensity = 40000
+    float inputs:shaping:cone:angle = 180
+    float inputs:shaping:cone:softness
+    float inputs:shaping:focus
+    color3f inputs:shaping:focusTint
+    asset inputs:shaping:ies:file
+    float inputs:width = 100
+    token visibility = "inherited"
+    double3 xformOp:rotateXYZ = (0, 90, 90)
+    double3 xformOp:scale = (0.3, 0.3, 0.3)
+    double3 xformOp:translate = (105, 330.45592, -107.81936600040041)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+}
+
+def RectLight "RectLight_01" (
+    prepend apiSchemas = ["ShapingAPI"]
+)
+{
+    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+    float inputs:height = 100
+    float inputs:intensity = 40000
+    float inputs:shaping:cone:angle = 180
+    float inputs:shaping:cone:softness
+    float inputs:shaping:focus
+    color3f inputs:shaping:focusTint
+    asset inputs:shaping:ies:file
+    float inputs:width = 100
+    token visibility = "inherited"
+    double3 xformOp:rotateXYZ = (0, 90, 90)
+    double3 xformOp:scale = (0.3, 0.3, 0.3)
+    double3 xformOp:translate = (105, 338.45591587367466, -219.684702197877)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+}
+
+def RectLight "RectLight_02" (
+    prepend apiSchemas = ["ShapingAPI"]
+)
+{
+    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+    float inputs:height = 100
+    float inputs:intensity = 40000
+    float inputs:shaping:cone:angle = 180
+    float inputs:shaping:cone:softness
+    float inputs:shaping:focus
+    color3f inputs:shaping:focusTint
+    asset inputs:shaping:ies:file
+    float inputs:width = 100
+    token visibility = "inherited"
+    double3 xformOp:rotateXYZ = (0, 90, 90)
+    double3 xformOp:scale = (0.3, 0.3, 0.3)
+    double3 xformOp:translate = (240, 338.4559158736745, -107.81936600040048)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+}
+
+def RectLight "RectLight_03" (
+    prepend apiSchemas = ["ShapingAPI"]
+)
+{
+    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+    float inputs:height = 100
+    float inputs:intensity = 40000
+    float inputs:shaping:cone:angle = 180
+    float inputs:shaping:cone:softness
+    float inputs:shaping:focus
+    color3f inputs:shaping:focusTint
+    asset inputs:shaping:ies:file
+    float inputs:width = 100
+    token visibility = "inherited"
+    double3 xformOp:rotateXYZ = (0, 90, 90)
+    double3 xformOp:scale = (0.3, 0.3, 0.3)
+    double3 xformOp:translate = (240, 338.4559158736745, -219.6847)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+}
+
+def RectLight "RectLight_04" (
+    prepend apiSchemas = ["ShapingAPI"]
+)
+{
+    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+    float inputs:height = 100
+    float inputs:intensity = 40000
+    float inputs:shaping:cone:angle = 180
+    float inputs:shaping:cone:softness
+    float inputs:shaping:focus
+    color3f inputs:shaping:focusTint
+    asset inputs:shaping:ies:file
+    float inputs:width = 100
+    token visibility = "inherited"
+    double3 xformOp:rotateXYZ = (0, 90, 90)
+    double3 xformOp:scale = (0.3, 0.3, 0.3)
+    double3 xformOp:translate = (440, 338.4559158736745, -219.6847)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+}
+
+def RectLight "RectLight_05" (
+    prepend apiSchemas = ["ShapingAPI"]
+)
+{
+    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+    float inputs:height = 100
+    float inputs:intensity = 40000
+    float inputs:shaping:cone:angle = 180
+    float inputs:shaping:cone:softness
+    float inputs:shaping:focus
+    color3f inputs:shaping:focusTint
+    asset inputs:shaping:ies:file
+    float inputs:width = 100
+    token visibility = "inherited"
+    double3 xformOp:rotateXYZ = (0, 90, 90)
+    double3 xformOp:scale = (0.3, 0.3, 0.3)
+    double3 xformOp:translate = (440, 338.4559158736745, -107.81937)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+}
+
+def RectLight "RectLight_06" (
+    prepend apiSchemas = ["ShapingAPI"]
+)
+{
+    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+    float inputs:height = 100
+    float inputs:intensity = 40000
+    float inputs:shaping:cone:angle = 180
+    float inputs:shaping:cone:softness
+    float inputs:shaping:focus
+    color3f inputs:shaping:focusTint
+    asset inputs:shaping:ies:file
+    float inputs:width = 100
+    token visibility = "inherited"
+    double3 xformOp:rotateXYZ = (0, 90, 90)
+    double3 xformOp:scale = (0.3, 0.3, 0.3)
+    double3 xformOp:translate = (620, 338.4559158736745, -219.6847)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+}
+
+def RectLight "RectLight_07" (
+    prepend apiSchemas = ["ShapingAPI"]
+)
+{
+    float3[] extent = [(-50, -50, -0), (50, 50, 0)]
+    float inputs:height = 100
+    float inputs:intensity = 40000
+    float inputs:shaping:cone:angle = 180
+    float inputs:shaping:cone:softness
+    float inputs:shaping:focus
+    color3f inputs:shaping:focusTint
+    asset inputs:shaping:ies:file
+    float inputs:width = 100
+    token visibility = "inherited"
+    double3 xformOp:rotateXYZ = (0, 90, 90)
+    double3 xformOp:scale = (0.3, 0.3, 0.3)
+    double3 xformOp:translate = (620, 338.45591587367466, -107.81937)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
 }
 
