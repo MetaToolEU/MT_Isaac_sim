@@ -1,12 +1,12 @@
 ## Renders
 <p align="center">
-  <img src="/Previews/Screenshot_from_2024-03-06 13-34-27.png">
+  <img src="Previews/Screenshot_from_2024-03-06 13-34-27.png">
 </p>
 <p align="center">
-  <img src="/Previews/Screenshot_from_2024-03-06 13-33-49.png">
+  <img src="Previews/Screenshot_from_2024-03-06 13-33-49.png">
 </p>
 <p align="center">
-  <img src="/Previews/Screenshot_from_2024-03-06 13-33-06.png">
+  <img src="Previews/Screenshot_from_2024-03-06 13-33-06.png">
 </p>
 
 ## USDA texture pathing issue:
