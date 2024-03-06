@@ -1,3 +1,14 @@
+## Renders
+<p align="center">
+  <img src="./Previews/Screenshot_from_2024-03-06 13-34-27.png">
+</p>
+<p align="center">
+  <img src="./Previews/Screenshot_from_2024-03-06 13-33-49.png">
+</p>
+<p align="center">
+  <img src="./Previews/Screenshot_from_2024-03-06 13-33-06.png">
+</p>
+
 ## USDA texture pathing issue:
 To make textures portable, when you save as .usda open it as code, in the line where you define the world, you can see you define “Laboratorio”, it has an absolute path, that won’t work if trying to open it in another computer. 
 To fix this issue, remove the part on the right of the =, and substitute it with ./Laboratorio.usd .
