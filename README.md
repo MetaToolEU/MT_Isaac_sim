@@ -8,6 +8,10 @@
   <img src="https://github.com/MetaToolEU/MT_Isaac_sim//assets/28174056/d44a65a1-64d7-4133-a371-0c3a1c28e209" alt="gripper_mpc">
 </p>
 
+
+https://github.com/MetaToolEU/MT_Isaac_sim/assets/28174056/f53435bb-87a1-4ff9-9b28-50b225b56b98
+
+
 ## Features
 
 - **Dual UR Arm Simulation**: Simulate UR3e arms simultaneously.
