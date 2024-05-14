@@ -29,6 +29,9 @@ import logging
 import sys
 
 import time
+import os
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 parser = argparse.ArgumentParser()
 parser.add_argument(
     "--host",
@@ -45,7 +48,7 @@ ur3e_gripper_instance = UR3eGripper(arg.host,rtde_receive_interface,30004)
 # set up paths and prims
 robot_name = "UR3e"
 prim_path = "/UR3e"
-usd_path ="/home/khalil/Desktop/ur3e_gripper_humble_moveit2-humble/flatten.usd"
+usd_path = os.path.join(script_dir, "../usd/flatten.usd")
 
 # set references to staget in isaac
 add_reference_to_stage(usd_path=usd_path, prim_path=prim_path)
@@ -62,9 +65,9 @@ rmp_config = load_supported_motion_policy_config(robot_name, "RMPflow")
 
 # Initialize an RmpFlow object and set up
 rmpflow = RmpFlow(            
-            robot_description_path =  "/home/khalil/Documents/GitHub/MT_Isaac_sim/motion_policy_configs/ur3e/rmpflow/ur3e_gripper_robot_description.yaml",
-            urdf_path =  "/home/khalil/Documents/GitHub/MT_Isaac_sim/motion_policy_configs/ur3e/ur3e_gripper.urdf",
-            rmpflow_config_path = "/home/khalil/Documents/GitHub/MT_Isaac_sim/motion_policy_configs/ur3e/rmpflow/ur3e_gripper_rmpflow_config.yaml",
+            robot_description_path = os.path.join(script_dir, "../motion_policy_configs/ur3e/rmpflow/ur3e_gripper_robot_description.yaml"),
+            urdf_path =  os.path.join(script_dir, "../motion_policy_configs/ur3e/ur3e_gripper.urdf"),
+            rmpflow_config_path = os.path.join(script_dir, "../motion_policy_configs/ur3e/rmpflow/ur3e_gripper_rmpflow_config.yaml"),
             end_effector_frame_name = "gripper_center",
             maximum_substep_size = 0.00334
         )
