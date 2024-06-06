@@ -1,0 +1,111 @@
+<?xml version="1.0" ?>
+<robot name="zimmer" xmlns:xacro="http://ros.org/wiki/xacro">
+<xacro:macro name="zimmer" params="prefix parent *origin sim:=false">
+   <xacro:property name="gripper_rotation" value="0.3927"/>
+  <link name="${prefix}_base">
+    <visual>
+    	<geometry>
+			<mesh filename="package://zimmer_description/meshes/visual/gripper_body.dae"/>
+      	</geometry>
+      			<origin xyz="0.0 0.0 0.0" rpy="0 0 ${gripper_rotation}"/>  
+    </visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://zimmer_description/meshes/collision/zimmer_body.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+      <origin xyz="0 0 0.0" rpy="${pi/2} 0 ${gripper_rotation}"/>
+		</collision>
+    <inertial>
+      	<mass value="50"/>
+      	<inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+
+  <link name="${prefix}_finger_right">
+    <visual>
+      	<geometry>
+        	<mesh filename="package://zimmer_description/meshes/visual/right_finger.dae"/>
+      	</geometry>
+      			<origin xyz="0.0 0.0 0.0" rpy="0 0 ${gripper_rotation}"/>
+    </visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://zimmer_description/meshes/collision/Right_Finger.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+      <origin xyz="0 0 0.00" rpy="${pi/2} 0 ${gripper_rotation}"/>
+		</collision>
+    <inertial>
+      	<mass value="5"/>
+      	<inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+
+  <link name="${prefix}_finger_left">
+    <visual>
+      	<geometry>
+        	<mesh filename="package://zimmer_description/meshes/visual/left_finger.dae"/>
+      	</geometry>
+      	<origin xyz="0.0 0.0 0.0" rpy="0 0 ${pi + gripper_rotation}"/>
+    </visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://zimmer_description/meshes/collision/Left_Finger.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0 ${pi+gripper_rotation}"/>
+		</collision>
+    <inertial>
+      	<mass value="5"/>
+      	<inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+
+
+  <joint name="${prefix}_to_base" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="${parent}"/>
+    <child link="${prefix}_base"/>
+  </joint>
+
+  <joint name="${prefix}_right_finger_joint" type="prismatic">
+    <axis xyz="0 1 0"/>
+    <origin xyz="0.0 0 0" rpy="0.0 0.0 0.0"/>
+    <parent link="${prefix}_base"/>
+    <child link="${prefix}_finger_right"/>
+    <limit effort="1000.0" lower="-0.013" upper="0.0" velocity="10"/>
+  </joint>
+
+  <joint name="${prefix}_left_finger_joint" type="prismatic">
+    <mimic joint="${prefix}_right_finger_joint"/>
+    <axis xyz="0 1 0"/>
+    <origin xyz="0.0 0 0" rpy="0.0 0.0 3.1415926535"/>
+    <parent link="${prefix}_base"/>
+    <child link="${prefix}_finger_left"/>
+    <limit effort="1000.0" lower="-0.013" upper="0.0" velocity="10"/>
+  </joint>
+
+
+
+  <ros2_control name="GazeboSystem" type="system">
+    <hardware>
+      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+    </hardware>
+    <joint name="${prefix}_right_finger_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.15</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${prefix}_left_finger_joint">
+      <param name="mimic">${prefix}_right_finger_joint</param>
+      <param name="multiplier">1</param>
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+  </ros2_control>
+
+</xacro:macro>
+</robot>
