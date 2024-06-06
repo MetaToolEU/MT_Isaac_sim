@@ -23,7 +23,7 @@ https://github.com/MetaToolEU/MT_Isaac_sim/assets/28174056/f53435bb-87a1-4ff9-9b
 - [Isaac Sim](https://docs.omniverse.nvidia.com/isaacsim/latest/installation/install_workstation.html)
 - Python 3.7 or later
 - [UR RTDE](https://sdurobotics.gitlab.io/ur_rtde/)
-
+- Curobo v0.6.2  (The project is developed and tested on Curobo version 0.6.2)
 
 ## Getting Started
 1. Clone the repository:
@@ -42,8 +42,17 @@ https://github.com/MetaToolEU/MT_Isaac_sim/assets/28174056/f53435bb-87a1-4ff9-9b
    source ~/.bashrc
    ```
    
-4.   Run the Python script with Isaac Sim:
+4.  To launch dual robot digital twin run the Python script with Isaac Sim:
    Replace "yyy.yyy.yyy.yyy" with the actual IP addresses of your first and second robots.
    ```bash 
    omni_python isaac_rtde_dual_arm.py --robot-ip "yyy.yyy.yyy.yyy" --robot-ip2 "yyy.yyy.yyy.yyy"
+   ```
+<p align="center"><b>Curobo motion generation reacher demo</b></p>
+<p align="center">
+  <img src="https://github.com/MetaToolEU/MT_Isaac_sim/assets/28174056/f562b6ce-31e6-4a04-9e00-170197926f91" alt="Curobo">
+</p>
+
+5. To launch the Curobo example run :
+   ```bash
+   omni_python motion_gen_reacher.py
    ```
