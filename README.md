@@ -19,12 +19,45 @@ https://github.com/MetaToolEU/MT_Isaac_sim/assets/28174056/f53435bb-87a1-4ff9-9b
 - **Collision Avoidance**: Integrate collision detection for safe operations.
 - **Path Planning**: Develop optimized trajectories using Isaac Sim extensions.
 
-### Prerequisites
+
+## System Requirements
+
+To run the Docker-based simulation tutorial, ensure your system meets the following requirements:
+
+- **Operating System**: Ubuntu 20.04 LTS or later (preferred); Docker is also available for Windows and macOS.
+- **Docker**: Docker Engine and Docker Compose installed (version 1.27+ recommended).
+- **CPU**: Multi-core processor (e.g., Intel Core i7 or equivalent).
+- **GPU**: NVIDIA GPU with CUDA support (e.g., RTX 2060 or higher) and driver version **525.60.11** or later.
+- **RAM**: Minimum 8 GB (16 GB recommended).
+- **Storage**: At least 50 GB of free disk space for Docker images and data.
+- **Network**: Stable internet connection for downloading Docker images and dependencies.
+
+**Important**: Ensure Docker is properly configured to utilize the GPU if required and that your system has adequate resources for smooth operation. Verify GPU availability with the following command:
+
+```bash
+docker run --rm --gpus all nvidia/cuda:11.2.2-base-ubuntu20.04 nvidia-smi
+```
+### Additional Requirements
 - [Isaac Sim](https://docs.omniverse.nvidia.com/isaacsim/latest/installation/install_workstation.html)
 - Python 3.7 or later
 - [UR RTDE](https://sdurobotics.gitlab.io/ur_rtde/)
 - Curobo v0.6.2  (The project is developed and tested on Curobo version 0.6.2)
+## Setup using Docker (RECOMENDED)
+1. **Setup NVIDIA GPU Cloud (NGC) Environment:**
 
+   Ensure you have an NGC API key. Follow the instructions [here](https://docs.nvidia.com/ngc/gpu-cloud/ngc-user-guide/index.html#generating-api-key) to generate one.
+
+   Log in to NGC using Docker:
+
+   ```bash
+   docker login nvcr.io
+   Username: $oauthtoken
+   Password: [Your NGC API Key]
+2. **Install and configure your omniverse Nucleus user:**
+   
+   Ensure that you have [Omniverse Launcher](https://www.nvidia.com/es-es/omniverse/download/) installed
+   
+   After installing Omniverse Launcher, configure your local [Nucleus Server](https://docs.omniverse.nvidia.com/nucleus/latest/workstation/installation.html)
 ## Getting Started
 1. Clone the repository:
 
