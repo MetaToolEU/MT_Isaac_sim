@@ -72,7 +72,6 @@ elif [[ "$input_arg" == *isaac_sim* ]] ; then
         -v ~/docker/isaac-sim/data:/root/.local/share/ov/data:rw \
         -v ~/docker/isaac-sim/documents:/home/$USER/Documents:rw \
         -v "$SCRIPT_DIR../../Isaac_launch/:/pkgs/curobo/examples/Isaac_launch:rw"\
-        -v "$SCRIPT_DIR../../usd_files/:/pkgs/curobo/src/curobo/content/assets/usd_files:rw"\
         --volume /dev:/dev \
         curobo_docker:$input_arg
 
