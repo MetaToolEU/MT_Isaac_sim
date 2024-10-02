@@ -1,10 +1,10 @@
 from rtde_io import RTDEIOInterface  # Import the RTDEIOInterface class
-
 import logging
 import sys
 import rtde as rtde
 import rtde as rtde_config
 import argparse
+import time
 
 class UR3eGripper:
     def __init__(self, ip_address, rtde_receive_interface, port):
@@ -24,7 +24,7 @@ class UR3eGripper:
         parser.add_argument("--buffered", help="Use buffered receive which doesn't skip data", action="store_true")
         parser.add_argument("--binary", help="save the data in binary format", action="store_true")
         self.args = parser.parse_args()
-        print(port)
+
         # Set IP address and port for RTDE communication
         self.ip_address = ip_address
 
@@ -32,9 +32,14 @@ class UR3eGripper:
         if self.args.verbose:
             logging.basicConfig(level=logging.INFO)
 
-        self.conf = rtde_config.ConfigFile("record_configuration.xml")
+        self.conf = rtde_config.ConfigFile(self.args.config)
         self.output_names, _ = self.conf.get_recipe("out")
         self.con = rtde.RTDE(ip_address, port)
+
+        self.connect_and_start()
+
+    def connect_and_start(self):
+        # Establish the RTDE connection and start synchronization
         self.con.connect()
         self.con.get_controller_version()
 
@@ -64,25 +69,39 @@ class UR3eGripper:
         self.rtde_io.setToolDigitalOut(0, False)
         self.rtde_io.setToolDigitalOut(1, True)
 
-
     def extract_position(self):
-        state = self.con.receive(binary=self.args.binary)
-        actual_q = None
-        gripper_position = None
+        try:
+            state = self.con.receive(binary=self.args.binary)
+            actual_q = None
+            gripper_position = None
 
-        if state is not None:
-            for name in self.output_names:
-                value = getattr(state, name, None)
-                
-                if name == "tool_analog_input0":
-                    if not isinstance(value, list):
-                        tool_analog_input0 = value
-                        gripper_position = round(map_value(tool_analog_input0, 0, 10, 0.0, -0.013),3)
+            if state is not None:
+                for name in self.output_names:
+                    value = getattr(state, name, None)
+                    
+                    if name == "tool_analog_input0":
+                        if not isinstance(value, list):
+                            tool_analog_input0 = value
+                            gripper_position = round(map_value(tool_analog_input0, 0, 10, 0.0, -0.013), 3)
 
-                elif name == "actual_q":
-                    actual_q = value
+                    elif name == "actual_q":
+                        actual_q = value
 
-        return actual_q, gripper_position
+            return actual_q, gripper_position
+        except Exception as e:
+            logging.error(f"Error receiving data: {e}")
+            self.reconnect()
+            return None, None
+
+    def reconnect(self):
+        logging.info("Attempting to reconnect...")
+        try:
+            self.con.disconnect()
+        except Exception as e:
+            logging.error(f"Error during disconnect: {e}")
+        
+        time.sleep(2)  # Wait before trying to reconnect
+        self.connect_and_start()
 
 def map_value(value, min_input, max_input, min_out, max_out):
     # Ensure the value is within the input range
