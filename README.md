@@ -2,12 +2,6 @@
 
 🤖 Simulate and control two Universal Robots (UR) arms concurrently using NVIDIA Isaac Sim. This project provides a digital twin environment for realistic robotic simulation and testing control algorithms.
 
-![Isaac_sim_real_control](https://github.com/MetaToolEU/MT_Isaac_sim/assets/28174056/ea133980-3dd8-4deb-8aa1-991018188275)
-<p align="center"><b>Model Predictive Control (MPC) to reach target</b></p>
-<p align="center">
-  <img src="https://github.com/MetaToolEU/MT_Isaac_sim//assets/28174056/d44a65a1-64d7-4133-a371-0c3a1c28e209" alt="gripper_mpc">
-</p>
-
 
 https://github.com/MetaToolEU/MT_Isaac_sim/assets/28174056/f53435bb-87a1-4ff9-9b28-50b225b56b98
 
@@ -59,33 +53,50 @@ docker run --rm --gpus all nvidia/cuda:11.2.2-base-ubuntu20.04 nvidia-smi
    
    After installing Omniverse Launcher, configure your local [Nucleus Server](https://docs.omniverse.nvidia.com/nucleus/latest/workstation/installation.html)
 ## Getting Started
-1. Clone the repository:
+#### 1. Clone the repository:
 
    ```bash
    git clone https://github.com/MetaToolEU/MT_Isaac_sim.git
+   cd MT_Isaac_sim/Docker
    ```
-   
-2. Add an alias to Isaac Sim’s python in your bashrc file:
+#### 2 Build the Docker image:
+Run the provided script to set up the environment and build the Docker image:
+
+```bash
+bash build_docker.sh isaac_sim_2023.1.0
+```
+#### 3 Run the Docker Container:
+Enable GUI visualization on your host machine:
+```bash
+xhost + # this will enable gui visualization
+```
+Start the Isaac Sim container:
+```bash
+bash start_docker.sh isaac_sim_2023.1.0
+cd examples/Isaac_launch
+```
+### If you are using Curobo local installation :
+#### 1. Add an alias to Isaac Sim’s python in your bashrc file:
    ```bash  
    echo "alias omni_python='~/.local/share/ov/pkg/isaac_sim-2022.2.1/python.sh'" >> ~/.bashrc
    ```
    
-3. Update your bash environment to include the new alias:
+#### 2. Update your bash environment to include the new alias:
    ```bash 
    source ~/.bashrc
    ```
-   
-4.  To launch dual robot digital twin run the Python script with Isaac Sim:
+## Launch Demos
+#### 1.  To launch dual robot digital twin run the Python script with Isaac Sim:
    Replace "yyy.yyy.yyy.yyy" with the actual IP addresses of your first and second robots.
    ```bash 
    omni_python isaac_rtde_dual_arm.py --robot-ip "yyy.yyy.yyy.yyy" --robot-ip2 "yyy.yyy.yyy.yyy"
    ```
-<p align="center"><b>Curobo motion generation reacher demo</b></p>
-<p align="center">
-  <img src="https://github.com/MetaToolEU/MT_Isaac_sim/assets/28174056/f562b6ce-31e6-4a04-9e00-170197926f91" alt="Curobo">
-</p>
 
-5. To launch the Curobo example run :
+#### 2. To launch the Curobo multi_arm_reacher_MT example run :
    ```bash
-   omni_python motion_gen_reacher.py
+   omni_python multi_arm_reacher_MT.py
+   ```
+#### 3. To launch the Curobo Simple_stacking_ur example run :
+   ```bash
+   omni_python simple_stacking_ur.py
    ```
