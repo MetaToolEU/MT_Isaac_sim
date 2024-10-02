@@ -34,7 +34,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--robot", type=str, default="dual_ur3e.yml", help="robot configuration to load"
+    "--robot", type=str, default="dual_ur3e_simple.yml", help="robot configuration to load"
 )
 args = parser.parse_args()
 
@@ -56,7 +56,9 @@ import numpy as np
 from helper import add_extensions, add_robot_to_scene
 from omni.isaac.core import World
 from omni.isaac.core.objects import cuboid, sphere
-
+# Standard Library
+from typing import Optional
+import omni.graph.core as og  # noqa E402
 ########### OV #################
 from omni.isaac.core.utils.types import ArticulationAction
 
@@ -200,7 +202,124 @@ def main():
             )
             names.append("/World/target_" + i)
     i = 0
+    import omni
+    from pxr import UsdGeom
+
+    stage=omni.usd.get_context().get_stage()
+
+    path="/World/Camera/MyCamera"
+    prim_type="Camera"
+    translation=(-0.45,0.48,4.73)
+    rotation=(0,0,90)
+    camera_prim = stage.DefinePrim(path, prim_type)
+    xform_api=UsdGeom.XformCommonAPI(camera_prim)
+    xform_api.SetTranslate(translation)
+    xform_api.SetRotate(rotation)
+
+
+    UR_STAGE_PATH="/World/ur3e_robot"
+    Camera_STAGE_PATH="/World/Camera/MyCamera"
+    simulation_app.update()
+    from omni.isaac.core.utils.extensions import enable_extension
+    enable_extension("omni.isaac.ros2_bridge")
+
+    try:
+        og.Controller.edit(
+            {"graph_path": "/ActionGraph", "evaluator_name": "execution"},
+            {
+                og.Controller.Keys.CREATE_NODES: [
+                    ("OnImpulseEvent", "omni.graph.action.OnImpulseEvent"),
+                    ("ReadSimTime", "omni.isaac.core_nodes.IsaacReadSimulationTime"),
+                    ("Context", "omni.isaac.ros2_bridge.ROS2Context"),
+                    ("PublishJointState", "omni.isaac.ros2_bridge.ROS2PublishJointState"),
+                    (
+                        "SubscribeJointState",
+                        "omni.isaac.ros2_bridge.ROS2SubscribeJointState",
+                    ),
+                    (
+                        "ArticulationController",
+                        "omni.isaac.core_nodes.IsaacArticulationController",
+                    ),
+                    ("PublishClock", "omni.isaac.ros2_bridge.ROS2PublishClock"),
+
+                    ######camera graph
+                    ("IsaacCreateViewport", "omni.isaac.core_nodes.IsaacCreateViewport"),
+                    ("IsaacGetViewportRenderProduct", "omni.isaac.core_nodes.IsaacGetViewportRenderProduct"),
+                    ("IsaacSetCameraOnRenderProduct", "omni.isaac.core_nodes.IsaacSetCameraOnRenderProduct"),
+                    ("ROS2CameraHelper", "omni.isaac.ros2_bridge.ROS2CameraHelper"),
+                ],
+                og.Controller.Keys.CONNECT: [
+                    ("OnImpulseEvent.outputs:execOut", "PublishJointState.inputs:execIn"),
+                    # ("OnImpulseEvent.outputs:execOut", "SubscribeJointState.inputs:execIn"),
+                    ("OnImpulseEvent.outputs:execOut", "PublishClock.inputs:execIn"),
+                    (
+                        "OnImpulseEvent.outputs:execOut",
+                        "ArticulationController.inputs:execIn",
+                    ),
+                    ("Context.outputs:context", "PublishJointState.inputs:context"),
+                    # ("Context.outputs:context", "SubscribeJointState.inputs:context"),
+                    ("Context.outputs:context", "PublishClock.inputs:context"),
+                    (
+                        "ReadSimTime.outputs:simulationTime",
+                        "PublishJointState.inputs:timeStamp",
+                    ),
+                    ("ReadSimTime.outputs:simulationTime", "PublishClock.inputs:timeStamp"),
+                    # (
+                    #     "SubscribeJointState.outputs:jointNames",
+                    #     "ArticulationController.inputs:jointNames",
+                    # ),
+                    # (
+                    #     "SubscribeJointState.outputs:positionCommand",
+                    #     "ArticulationController.inputs:positionCommand",
+                    # ),
+                    # (
+                    #     "SubscribeJointState.outputs:velocityCommand",
+                    #     "ArticulationController.inputs:velocityCommand",
+                    # ),
+                    # (
+                    #     "SubscribeJointState.outputs:effortCommand",
+                    #     "ArticulationController.inputs:effortCommand",
+                    # ),
+
+                    ###### camera connects 
+                    ("OnImpulseEvent.outputs:execOut", "IsaacCreateViewport.inputs:execIn"),
+                    ("IsaacCreateViewport.outputs:execOut", "IsaacGetViewportRenderProduct.inputs:execIn"),
+                    ("IsaacCreateViewport.outputs:viewport", "IsaacGetViewportRenderProduct.inputs:viewport"),
+
+                    ("IsaacGetViewportRenderProduct.outputs:execOut", "IsaacSetCameraOnRenderProduct.inputs:execIn"),
+                    ("IsaacGetViewportRenderProduct.outputs:renderProductPath", "IsaacSetCameraOnRenderProduct.inputs:renderProductPath"),
+                    ("IsaacGetViewportRenderProduct.outputs:renderProductPath", "ROS2CameraHelper.inputs:renderProductPath"),
+
+                    ("Context.outputs:context", "ROS2CameraHelper.inputs:context"),
+                    ("IsaacSetCameraOnRenderProduct.outputs:execOut", "ROS2CameraHelper.inputs:execIn"),
+                ],
+                og.Controller.Keys.SET_VALUES: [
+                    ("Context.inputs:useDomainIDEnvVar", 1),
+                    # Setting the /UR target prim to Articulation Controller node
+                    # ("ArticulationController.inputs:usePath", True),
+                    ("ArticulationController.inputs:robotPath", UR_STAGE_PATH),
+                    ("PublishJointState.inputs:targetPrim", UR_STAGE_PATH),
+                    ("PublishJointState.inputs:topicName", "isaac_joint_states"),
+                    # ("SubscribeJointState.inputs:topicName", "isaac_joint_commands"),
+
+
+                    ######### camera variables 
+                    ("IsaacCreateViewport.inputs:name", "Camera_view_port"),
+                    ("IsaacSetCameraOnRenderProduct.inputs:cameraPrim",Camera_STAGE_PATH ),
+                    # # Ros2 settings
+                    ("ROS2CameraHelper.inputs:frameId", "World"),
+                    ("ROS2CameraHelper.inputs:topicName", "Camera_image"),
+                ],
+            },)
+    except Exception as e:
+        print(e)
+
+
     while simulation_app.is_running():
+
+        og.Controller.set(
+        og.Controller.attribute("/ActionGraph/OnImpulseEvent.state:enableImpulse"), True
+        )
         my_world.step(render=True)
         if not my_world.is_playing():
             if i % 100 == 0:
